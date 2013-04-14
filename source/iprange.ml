@@ -6,12 +6,13 @@
 
 open Pcre
 open Int64
+open Printf
 
 type network = { prefix: int64; wildcard: int64 }
 type network_range = { start: int64; finish: int64 }
 type output_format = NETMASK | WILDCARD | CIDR
 
-let warn s = print_endline ("warning: " ^ s)
+let warn s = eprintf "warning: %s\n" s
 let ip_re = regexp "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 let check_wildcard wildcard =
   let rec _shift x =
