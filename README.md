@@ -3,6 +3,16 @@ iprange
 
 Tools for expanding / compressing ip addresses. No problem with large subnet!
 
+Installation
+============
+
+Build requires ocaml and ocaml-pcre to be installed. To Build run make inside source directory,
+
+```
+cd source
+make
+```
+
 Examples
 ========
 

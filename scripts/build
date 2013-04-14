@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd source || exit 1
+make || exit 1
+install -m755 ipexpand $DESTDIR/usr/bin
+install -m755 ipcompress $DESTDIR/usr/bin
+
