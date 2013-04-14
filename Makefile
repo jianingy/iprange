@@ -14,4 +14,4 @@ ip_expand: ip_expand.ml iprange
 	ocamlfind ocamlopt -o ipexpand iprange.cmx ip_expand.cmx -linkpkg -package pcre
 
 clean:
-	rm -f ip_compress *.cmx *.cmi *.o
+	rm -f ipcompress ipexpand *.cmx *.cmi *.o
