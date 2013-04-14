@@ -1,7 +1,7 @@
 iprange
 =======
 
-Tools for expanding / compressing ip addresses
+Tools for expanding / compressing ip addresses. No problem with large subnet!
 
 Examples
 ========
