@@ -10,7 +10,7 @@ open Printf
 
 type network = { prefix: int64; wildcard: int64 }
 type network_range = { start: int64; finish: int64 }
-type output_format = NETMASK | WILDCARD | CIDR
+type output_format = NETMASK | WILDCARD | CIDR | RANGE
 
 let warn s = eprintf "warning: %s\n" s
 let ip_re = regexp "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
@@ -133,6 +133,7 @@ let string_of_network network output_format =
     | CIDR -> prefix ^ "/" ^ (string_of_int (cidr_of_wildcard wildcard))
     | WILDCARD -> prefix ^ "/" ^ (string_of_ip wildcard)
     | NETMASK -> prefix ^ "/" ^ (string_of_ip (logxor wildcard (of_int 0xffffffff)))
+    | RANGE -> prefix ^ "-" ^ (string_of_ip network.finish)
 
 let compress_network ?(output_type=NETMASK) network_strings =
   let networks = List.map network_of_string network_strings in
