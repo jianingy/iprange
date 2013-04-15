@@ -2,6 +2,8 @@
 
 make || exit 1
 mkdir -p $DESTDIR/usr/bin || exit 1
+mkdir -p $DESTDIR/usr/share/man/man1|| exit 1
 install -m755 ipexpand $DESTDIR/usr/bin || exit 1
 install -m755 ipcompress $DESTDIR/usr/bin || exit 1
+cp doc/*.man $DESTDIR/usr/share/man/man1
 
