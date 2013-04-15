@@ -1,0 +1,41 @@
+.TH "" "1"
+.SH "NAME"
+.PP
+ipcompress - compress subnets
+.SH "SYNOPISIS"
+.PP
+ipcompress [OPTION] [NETWORK] ...
+.SH "DESCRIPTION"
+.PP
+If no NETWORK provided, NETWORKs will be read from standard input. The
+input should be in netmask, wildcard, cidr or range notation.
+
+.PP
+The mandatory arguments are,
+
+.TP
+\fB-type\fP
+specify output notation. it can be netmask, cidr, wildcard
+or range.
+.TP
+\fB-help, --help\fP
+display a breif help message
+.SH "EXAMPLES"
+.RS
+.nf
+\fC# ipcompress 192.168.36.0-192.168.36.220
+192.168.36.220/32
+192.168.36.216/30
+192.168.36.208/29
+192.168.36.192/28
+192.168.36.128/26
+192.168.36.0/25
+\fP
+.fi
+.RE
+.SH "AUTHOR"
+.PP
+Written by Jianing YANG
+.SH "REPORTING BUGS"
+.PP
+\fIhttps://github.com/jianingy/iprange/issues\fP

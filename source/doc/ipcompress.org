@@ -1,0 +1,39 @@
+* NAME
+
+ipcompress - compress subnets
+
+* SYNOPISIS
+
+ipcompress [OPTION] [NETWORK] ...
+
+* DESCRIPTION
+If no NETWORK provided, NETWORKs will be read from standard input. The
+input should be in netmask, wildcard, cidr or range notation.
+
+The mandatory arguments are,
+
+- -type :: specify output notation. it can be netmask, cidr, wildcard
+           or range.
+- -help, --help :: display a breif help message
+
+* EXAMPLES
+
+#+BEGIN_SRC sh
+
+# ipcompress 192.168.36.0-192.168.36.220
+192.168.36.220/32
+192.168.36.216/30
+192.168.36.208/29
+192.168.36.192/28
+192.168.36.128/26
+192.168.36.0/25
+
+#+END_SRC
+
+* AUTHOR
+
+Written by Jianing YANG
+
+* REPORTING BUGS
+
+https://github.com/jianingy/iprange/issues

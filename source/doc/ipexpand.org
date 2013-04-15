@@ -1,0 +1,39 @@
+* NAME
+
+ipexpand - expand a subnet to smaller subnets
+
+* SYNOPISIS
+
+ipexpand [OPTION] [NETWORK] ...
+
+* DESCRIPTION
+
+Expand a subnet into smaller subnets. If no NETWORK provided, NETWORK
+will be read from standard input. The input should be in netmask,
+wildcard, cidr or range notation.
+
+The mandatory arguments are,
+
+- -type :: specify output notation. it can be netmask, cidr, wildcard
+           or range.
+- -netmask :: specifiy output subnet size in netmask notation
+- -cidr :: specifiy output subnet size in cidr notation
+- -help, --help :: display a breif help message
+
+* EXAMPLES
+
+#+BEGIN_SRC sh
+# ipexpand -cidr 26 192.168.1.0/24
+192.168.1.0/26
+192.168.1.64/26
+192.168.1.128/26
+192.168.1.192/26
+#+END_SRC
+
+* AUTHOR
+
+Written by Jianing YANG
+
+* REPORTING BUGS
+
+https://github.com/jianingy/iprange/issues

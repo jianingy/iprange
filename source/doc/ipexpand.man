@@ -1,0 +1,46 @@
+.TH "" "1"
+.SH "NAME"
+.PP
+ipexpand - expand a subnet to smaller subnets
+.SH "SYNOPISIS"
+.PP
+ipexpand [OPTION] [NETWORK] ...
+.SH "DESCRIPTION"
+.PP
+Expand a subnet into smaller subnets. If no NETWORK provided, NETWORK
+will be read from standard input. The input should be in netmask,
+wildcard, cidr or range notation.
+
+.PP
+The mandatory arguments are,
+
+.TP
+\fB-type\fP
+specify output notation. it can be netmask, cidr, wildcard
+or range.
+.TP
+\fB-netmask\fP
+specifiy output subnet size in netmask notation
+.TP
+\fB-cidr\fP
+specifiy output subnet size in cidr notation
+.TP
+\fB-help, --help\fP
+display a breif help message
+.SH "EXAMPLES"
+.RS
+.nf
+\fC# ipexpand -cidr 26 192.168.1.0/24
+192.168.1.0/26
+192.168.1.64/26
+192.168.1.128/26
+192.168.1.192/26
+\fP
+.fi
+.RE
+.SH "AUTHOR"
+.PP
+Written by Jianing YANG
+.SH "REPORTING BUGS"
+.PP
+\fIhttps://github.com/jianingy/iprange/issues\fP
