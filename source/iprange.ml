@@ -15,14 +15,10 @@ type output_format = NETMASK | WILDCARD | CIDR
 let warn s = eprintf "warning: %s\n" s
 let ip_re = regexp "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 let check_wildcard wildcard =
-  let rec _shift x =
-    if logand x one = zero then
-      logand x (of_int 0xffffffff)
-    else
-      _shift (shift_right x 1) in
-  if compare (_shift wildcard) zero != 0
-  then failwith "invalid netmask"
-  else wildcard
+  if logand (succ wildcard) wildcard = zero then
+    wildcard
+  else
+    failwith "invalid netmask"
 
 let range_of_network network =
   let canonical_prefix = logand network.prefix (lognot network.wildcard) in
