@@ -1,3 +1,5 @@
+#+TITLE: ipcompress
+
 * NAME
 
 ipcompress - compress subnets

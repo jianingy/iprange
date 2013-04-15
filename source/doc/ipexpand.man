@@ -1,4 +1,5 @@
-.TH "" "1"
+.TH "ipexpand" "1"
+
 .SH "NAME"
 .PP
 ipexpand - expand a subnet to smaller subnets

@@ -1,4 +1,5 @@
-.TH "" "1"
+.TH "ipcompress" "1"
+
 .SH "NAME"
 .PP
 ipcompress - compress subnets
