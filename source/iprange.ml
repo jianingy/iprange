@@ -78,12 +78,7 @@ let network_of_string network_string =
     | _ -> failwith "empty ip address"
 
 let merge_network networks =
-  let rec _sort_network networks =
-    let _compare_network x y = compare x.start y.start > 0 in
-    match networks with
-      | [] -> []
-      | hd :: tl -> let lhs, rhs = List.partition (_compare_network hd) tl in
-		    (_sort_network lhs) @ (hd :: _sort_network rhs) in
+  let _compare_network x y = compare x.start y.start in
   let _merge_network acc x =
       (* output in reverse order *)
     match acc with
@@ -93,7 +88,7 @@ let merge_network networks =
 		    else if compare bound x.start >= 0 && compare hd.finish x.finish < 0 then
 		      {start=hd.start; finish=x.finish} :: tl
 		    else acc in
-  List.fold_left _merge_network [] (_sort_network networks)
+  List.fold_left _merge_network [] (List.stable_sort _compare_network networks)
 
 let network_prefix_size network =
   let network_size = succ (sub network.finish network.start) in
