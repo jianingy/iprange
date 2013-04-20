@@ -10,19 +10,15 @@ open Printf
 
 type network = { prefix: int64; wildcard: int64 }
 type network_range = { start: int64; finish: int64 }
-type output_format = NETMASK | WILDCARD | CIDR
+type output_format = NETMASK | WILDCARD | CIDR | RANGE
 
 let warn s = eprintf "warning: %s\n" s
 let ip_re = regexp "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
-let check_wildcard wildcard =
-  let rec _shift x =
-    if logand x one = zero then
-      logand x (of_int 0xffffffff)
-    else
-      _shift (shift_right x 1) in
-  if compare (_shift wildcard) zero != 0
-  then failwith "invalid netmask"
-  else wildcard
+let check_wildcard wildcard errmsg =
+  if logand (succ wildcard) wildcard = zero then
+    wildcard
+  else
+    failwith errmsg
 
 let range_of_network network =
   let canonical_prefix = logand network.prefix (lognot network.wildcard) in
@@ -45,7 +41,7 @@ let wildcard_of_netmask netmask =
   let netmask_int = ip_of_string netmask in
     (* check for valid wilcard *)
   let wildcard = logxor netmask_int (of_int 0xffffffff) in
-  check_wildcard wildcard
+  check_wildcard wildcard ("invalid netmask: " ^ netmask)
 
 let wildcard_of_cidr cidr =
   shift_right_logical (of_int 0xffffffff) (int_of_string cidr)
@@ -132,6 +128,7 @@ let string_of_network network output_format =
     | CIDR -> prefix ^ "/" ^ (string_of_int (cidr_of_wildcard wildcard))
     | WILDCARD -> prefix ^ "/" ^ (string_of_ip wildcard)
     | NETMASK -> prefix ^ "/" ^ (string_of_ip (logxor wildcard (of_int 0xffffffff)))
+    | RANGE -> prefix ^ "-" ^ (string_of_ip network.finish)
 
 let compress_network ?(output_type=NETMASK) network_strings =
   let networks = List.map network_of_string network_strings in
@@ -141,9 +138,10 @@ let compress_network ?(output_type=NETMASK) network_strings =
 
 let expand_network ?(netmask="32") (callback:network_range -> unit) network_string =
   let network = network_of_string network_string in
-  let wildcard = if pmatch ~rex:ip_re netmask then wildcard_of_netmask netmask
+  let wildcard = check_wildcard (if pmatch ~rex:ip_re netmask
+    then wildcard_of_netmask netmask
     else if pmatch ~rex:(regexp "\\d+") netmask then wildcard_of_cidr netmask
-    else failwith ("invalid mask string: " ^ netmask) in
+    else failwith ("wrong netmask format: " ^ netmask)) ("invalid netmask: " ^ netmask) in
   if compare (sub network.finish network.start) wildcard < 0 then
     (warn ("network is too small to be expanded: " ^ network_string);
      callback network)
@@ -154,4 +152,5 @@ let expand_network ?(netmask="32") (callback:network_range -> unit) network_stri
 	let next = {start=add current.finish one; finish=remain.finish} in
 	callback current;
 	_expand_network next in
+    let _ = check_wildcard (sub network.finish network.start) "invalid network range"  in
     ignore(_expand_network network)

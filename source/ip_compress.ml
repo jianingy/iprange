@@ -12,9 +12,10 @@ let set_out_format format =
   if String.compare format "netmask" = 0 then out_format := NETMASK
   else if String.compare format "cidr" = 0 then out_format := CIDR
   else if String.compare format "wildcard" = 0 then out_format := WILDCARD
+  else if String.compare format "range" = 0 then out_format := RANGE
   else failwith "invalid output format"
 let spec = [
-  ("-type", Arg.String set_out_format, "output ip format. valid values are netmask, cidr, wildcard.");
+  ("-type", Arg.String set_out_format, "output ip format. valid values are netmask, cidr, wildcard or range.");
 ]
 
 let read_network () =
